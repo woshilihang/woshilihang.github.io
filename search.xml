@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Javascript重温OOP之面向对象</title>
+      <link href="/2019/03/14/Javascript%E9%87%8D%E6%B8%A9OOP%E4%B9%8B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"/>
+      <url>/2019/03/14/Javascript%E9%87%8D%E6%B8%A9OOP%E4%B9%8B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
+      
+        <content type="html"><![CDATA[<p>面向对象程序设计（Object-oriented programming，OOP）是一种程序设计范型，同时也是一种程序开发的方法。对象指的是类的实例。它将对象作为程序的基本单元，将程序和数据封装其中，以提高软件的重用性、灵活性和扩展性。——维基百科</p><p>一般面向对象包含：继承、封装、多态、抽象</p><p>&lt;!-- more --&gt;</p><h2>对象形式的继承</h2><h3>浅拷贝</h3><p>var Person = {name: 'allin',age: 18,address: {home: 'home',office: 'office',}sclools: ['x','z'],};</p><p>var programer = {language: 'js',};</p><p>function extend(p, c){var c = c || {};for( var prop in p){c[prop] = p[prop];}}extend(Person, programer);programer.name;  // allinprogramer.address.home;  // homeprogramer.address.home = 'house';  //housePerson.address.home;  // house</p><h3>深拷贝</h3><p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function extendDeeply(p, c)&#123;</span><br><span class="line">    var c = c || &#123;&#125;;</span><br><span class="line">    for (var prop in p)&#123;</span><br><span class="line">        if(typeof p[prop] === &quot;object&quot;)&#123;</span><br><span class="line">            c[prop] = (p[prop].constructor === Array)?[]:&#123;&#125;;</span><br><span class="line">            extendDeeply(p[prop], c[prop]);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            c[prop] = p[prop];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>参考链接：<a href="https://segmentfault.com/a/1190000006125521" target="_blank" rel="noopener">Javascript重温OOP之面向对象</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>少年将通过学习 React 得知键盘的声音</title>
+      <link href="/2019/03/14/%E5%B0%91%E5%B9%B4%E5%B0%86%E9%80%9A%E8%BF%87%E5%AD%A6%E4%B9%A0-React-%E5%BE%97%E7%9F%A5%E9%94%AE%E7%9B%98%E7%9A%84%E5%A3%B0%E9%9F%B3/"/>
+      <url>/2019/03/14/%E5%B0%91%E5%B9%B4%E5%B0%86%E9%80%9A%E8%BF%87%E5%AD%A6%E4%B9%A0-React-%E5%BE%97%E7%9F%A5%E9%94%AE%E7%9B%98%E7%9A%84%E5%A3%B0%E9%9F%B3/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>假设我们要封装一个业务相关的 Modal ，我们不妨封装成一个函数，而不是一个组件。因为组件需要一个 state 来维护他是否显示。</p></blockquote><p>&lt;!-- more --&gt;</p><p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import React from &apos;react&apos;</span><br><span class="line">import Modal from &apos;path/to/modal&apos;</span><br><span class="line"></span><br><span class="line">export default function BusinessModal() &#123;</span><br><span class="line">  const div = document.createElement(&apos;div&apos;)</span><br><span class="line">  document.body.append(div)</span><br><span class="line"></span><br><span class="line">  function close() &#123;</span><br><span class="line">    ReactDOM.unmountComponentAtNode(div)</span><br><span class="line">    if (div &amp;&amp; div.parentNode) &#123;</span><br><span class="line">      div.parentNode.removeChild(div)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  function render() &#123;</span><br><span class="line">    ReactDOM.render(</span><br><span class="line">      &lt;Modal onClose=&#123;close&#125;&gt;</span><br><span class="line">        &lt;div&gt;My Business Modal&lt;/div&gt;</span><br><span class="line">      &lt;/Modal&gt;,</span><br><span class="line">      div</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    close</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2019/03/14/hello-world/"/>
+      <url>/2019/03/14/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2>Quick Start</h2><h3>Create a new post</h3><p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure></p><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3>Run server</h3><p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></p><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3>Generate static files</h3><p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure></p><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3>Deploy to remote sites</h3><p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure></p><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
