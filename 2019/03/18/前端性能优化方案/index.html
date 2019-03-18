@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>前端性能优化方案 | 李航的博客 | 动态一时爽，维护火葬场</title>
+
+  
+  <meta name="author" content="李航">
+  
+
+  
+  <meta name="description" content="前端性能优化方案
+
+
+从用户角度而言，优化能够让页面加载得更快、对用户的操作响应得更及时，能够给用户提供更为友好的体验。 2. 从服务商角度而言，优化能够减少页面请求数、或者减小请求所占带宽，能够节省可观的资源。
+
+
+
+页面级别的优化
+HTTP请求数、脚本无阻塞加载、内敛脚本的位置优化
+代码级别的优">
+  
+
+  
+  <meta name="keywords" content="前端工程师">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="前端性能优化方案">
+
+  <meta property="og:site_name" content="李航的博客">
+
+  
+  <meta property="og:image" content="/favicon.ico">
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="李航的博客" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">李航的博客</a>
+    </h1>
+    <p class="site-description">动态一时爽，维护火葬场</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">主页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+        <li><a href="/about">关于</a></li>
+      
+        <li><a href="/tags">标签</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>前端性能优化方案</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2019/03/18/前端性能优化方案/" rel="bookmark">
+        <time class="entry-date published" datetime="2019-03-18T06:31:04.000Z">
+          2019-03-18
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <h1>前端性能优化方案</h1>
+<blockquote>
+<ol>
+<li>从用户角度而言，优化能够让页面加载得更快、对用户的操作响应得更及时，能够给用户提供更为友好的体验。 2. 从服务商角度而言，优化能够减少页面请求数、或者减小请求所占带宽，能够节省可观的资源。</li>
+</ol>
+</blockquote>
+<ul>
+<li>页面级别的优化
+HTTP请求数、脚本无阻塞加载、内敛脚本的位置优化</li>
+<li>代码级别的优化
+Javascript的DOM操作优化，CSS选择符优化、图片优化以及HTML结构化的优化</li>
+</ul>
+<h2>页面级优化</h2>
+<h3>减少HTTP的请求书</h3>
+<p>一个完整的请求都需要经过DNS寻址、与服务器简历连接、发送数据、等待服务器响应以及接收数据这样一个漫长的过程</p>
+<ol>
+<li>从设计实现层面简化界面</li>
+<li>合理设置HTTP缓存（恰当设置缓存可以大大减少http请求，被缓存资源的请求服务器是304响应，只有Header没有Body，可以节省带宽）</li>
+<li>资源合并与压缩</li>
+<li>CSS Sprites(合并CSS图片，减少请求数的有一个好办法)</li>
+<li>Inline Image（使用 data: URL scheme的方式将图片嵌入到页面或 CSS中，如果不考虑资源管理上的问题的话，不失为一个好办法。如果是嵌入页面的话换来的是增大了页面的体积，而且无法利用浏览器缓存。使用在 CSS中的图片则更为理想一些。）</li>
+<li>Lazy load Images(重点了解下，能在某种条件下或者页面刚加载时减少HTTP请求书)</li>
+</ol>
+<h3>将外部脚本置底（将脚本内容在页面信息内容加载后在加载）</h3>
+<ol>
+<li>
+<p>浏览器在加载脚本完成之前，他后面的图片，样式以及其他脚本都处于阻塞阶段</p>
+</li>
+<li>
+<p>异步执行 inline脚本(其实原理和上面是一样，保证脚本在页面内容后面加载。)
+（inline脚本在执行时，也页面处于空白阶段，将执行较长的inline脚本异步执行，将script元素的defer属性（脚本不能触碰文档内容改变），使用setTimeout）</p>
+</li>
+<li>
+<p>将 CSS放在 HEAD中</p>
+</li>
+<li>
+<p>减少不必要的 HTTP跳转（以目录形式访问的HTTP连接，是否带/, 可能隐藏了301跳转）</p>
+</li>
+</ol>
+<h2>代码级优化</h2>
+<h3>JavaScript</h3>
+<ol>
+<li>
+<p>DOM
+DOM操作应该是脚本中最耗性能的一类操作，例如增加、修改、删除 DOM元素或者对 DOM集合进行操作。如果脚本中包含了大量的 DOM操作则需要注意以下几点：
+HTML Collection（HTML收集器，返回一个类数组内容集合，并不是一个静态内容，每次访问该集合都会触发这个查询然后更新查询结果）
+Reflow &amp; Repaint</p>
+</li>
+<li>
+<p>慎用 with</p>
+</li>
+</ol>
+<p><code>with(obj){ p = 1}; 代码块的行为实际上是修改了代码块中的 执行环境 ，将obj放在了其作用域链的最前端，在 with代码块中访问非局部变量是都是先从 obj上开始查找，如果没有再依次按作用域链向上查找，因此使用 with相当于增加了作用域链长度。而每次查找作用域链都是要消耗时间的，过长的作用域链会导致查找性能下降。</code></p>
+<ol start="3">
+<li>避免使用evel</li>
+</ol>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    <br>
+    
+    &copy; 2019 李航
+    
+  </p>
+</footer>
+    
+  </div>
+</div>
+</body>
+</html>
